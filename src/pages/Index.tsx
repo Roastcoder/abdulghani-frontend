@@ -14,16 +14,9 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useRef, useState, useEffect } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { useLanguage } from "@/contexts/LanguageContext";
-
 import { API_BASE_URL } from "@/config/api";
 
 const localFallbacks = [heroImage, discPlough, autoDiscPlough, leveller, cultivator, mbPlough];
-
-const resolveUrl = (url: string, fallback: string) => {
-  if (!url) return fallback;
-  if (url.startsWith('/uploads/')) return `${API_BASE_URL}${url}`;
-  return url;
-};
 
 const localProductImages: Record<string, string> = {
   "disc-plough": discPlough,
@@ -33,32 +26,45 @@ const localProductImages: Record<string, string> = {
   "mb-plough": mbPlough,
 };
 
+const resolveUrl = (url: string, fallback: string) => {
+  if (!url) return fallback;
+  if (url.startsWith("/uploads/")) return `${API_BASE_URL}${url}`;
+  return url;
+};
+
 const Index = () => {
   const { data: products } = useProducts();
   const { data: siteContent = {} } = useSiteContent();
+  const { t, language } = useLanguage();
+  const sc = siteContent as any;
   const displayProducts = products || [];
   const heroRef = useRef(null);
+  const carouselRef = useRef<string[]>([]);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const { t } = useLanguage();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const carouselRef = useRef<string[]>([]);
+
+  // For Hindi always use translations; for English use DB content with translation fallback
+  const heroTitle1 = language === "hi" ? t("hero.title1") : (sc.hero_title1 || t("hero.title1"));
+  const heroTitle2 = language === "hi" ? t("hero.title2") : (sc.hero_title2 || t("hero.title2"));
+  const heroTitle3 = language === "hi" ? t("hero.title3") : (sc.hero_title3 || t("hero.title3"));
+  const heroDesc   = language === "hi" ? t("hero.desc")   : (sc.hero_desc   || t("hero.desc"));
 
   const carouselImages = [
-    resolveUrl((siteContent as any).carousel_1, localFallbacks[0]),
-    resolveUrl((siteContent as any).carousel_2, localFallbacks[1]),
-    resolveUrl((siteContent as any).carousel_3, localFallbacks[2]),
-    resolveUrl((siteContent as any).carousel_4, localFallbacks[3]),
-    resolveUrl((siteContent as any).carousel_5, localFallbacks[4]),
-    resolveUrl((siteContent as any).carousel_6, localFallbacks[5]),
+    resolveUrl(sc.carousel_1, localFallbacks[0]),
+    resolveUrl(sc.carousel_2, localFallbacks[1]),
+    resolveUrl(sc.carousel_3, localFallbacks[2]),
+    resolveUrl(sc.carousel_4, localFallbacks[3]),
+    resolveUrl(sc.carousel_5, localFallbacks[4]),
+    resolveUrl(sc.carousel_6, localFallbacks[5]),
   ];
 
   carouselRef.current = carouselImages;
 
   useEffect(() => {
     setCurrentImageIndex(0);
-  }, [(siteContent as any).carousel_1, (siteContent as any).carousel_2]);
+  }, [sc.carousel_1, sc.carousel_2]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -75,15 +81,15 @@ const Index = () => {
   ];
 
   const stats = [
-    { value: (siteContent as any).stats_farmers || "500+", label: t("stats.happyFarmers") },
-    { value: (siteContent as any).stats_products || "5", label: t("stats.productLines") },
-    { value: (siteContent as any).stats_years || "10+", label: t("stats.yearsExperience") },
-    { value: "100%", label: t("stats.qualityTested") },
+    { value: sc.stats_farmers || "500+", label: t("stats.happyFarmers") },
+    { value: sc.stats_products || "5",   label: t("stats.productLines") },
+    { value: sc.stats_years   || "10+",  label: t("stats.yearsExperience") },
+    { value: "100%",                      label: t("stats.qualityTested") },
   ];
 
   return (
     <Layout>
-      {/* Hero with parallax */}
+      {/* Hero */}
       <section ref={heroRef} className="relative min-h-[90vh] flex items-center overflow-hidden">
         <motion.div style={{ y: heroY }} className="absolute inset-0">
           <AnimatePresence mode="wait">
@@ -102,38 +108,22 @@ const Index = () => {
         </motion.div>
         <motion.div style={{ opacity: heroOpacity }} className="container relative z-10 py-20">
           <div className="max-w-2xl">
-            <motion.p
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-wheat font-semibold tracking-[0.25em] uppercase text-sm mb-5 flex items-center gap-3"
-            >
+            <motion.p initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+              className="text-wheat font-semibold tracking-[0.25em] uppercase text-sm mb-5 flex items-center gap-3">
               <span className="w-10 h-px bg-wheat" /> {t("hero.tagline")}
             </motion.p>
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-              className="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-background leading-[1.05] mb-7"
-            >
-              {(siteContent as any).hero_title1 || t("hero.title1")}{" "}
-              <span className="text-wheat italic">{(siteContent as any).hero_title2 || t("hero.title2")}</span>,
-              <br />{(siteContent as any).hero_title3 || t("hero.title3")}
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+              className="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-background leading-[1.05] mb-7">
+              {heroTitle1}{" "}
+              <span className="text-wheat italic">{heroTitle2}</span>,
+              <br />{heroTitle3}
             </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              className="text-background/75 text-lg md:text-xl mb-10 max-w-lg leading-relaxed"
-            >
-              {(siteContent as any).hero_desc || t("hero.desc")}
+            <motion.p initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.6 }}
+              className="text-background/75 text-lg md:text-xl mb-10 max-w-lg leading-relaxed">
+              {heroDesc}
             </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
-              className="flex flex-wrap gap-4"
-            >
+            <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.5 }}
+              className="flex flex-wrap gap-4">
               <Link to="/products">
                 <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 h-13 px-10 text-base shadow-xl hover:shadow-2xl transition-shadow">
                   {t("hero.viewProducts")} <ArrowRight className="ml-2 w-5 h-5" />
@@ -147,19 +137,15 @@ const Index = () => {
             </motion.div>
           </div>
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}>
             <ChevronDown className="w-7 h-7 text-background/50" />
           </motion.div>
         </motion.div>
       </section>
 
-      {/* Stats counter */}
+      {/* Stats */}
       <section className="py-10 bg-primary">
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -179,10 +165,8 @@ const Index = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             {features.map((f, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <motion.div
-                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                  className="flex flex-col items-center text-center p-8 bg-card rounded-2xl shadow-sm hover:shadow-lg transition-shadow border border-border/50 h-full"
-                >
+                <motion.div whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="flex flex-col items-center text-center p-8 bg-card rounded-2xl shadow-sm hover:shadow-lg transition-shadow border border-border/50 h-full">
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-4">
                     <f.icon className="w-8 h-8 text-primary" />
                   </div>
@@ -203,26 +187,17 @@ const Index = () => {
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
               {t("products.title")} <br className="hidden sm:block" />{t("products.titleLine2")}
             </h2>
-            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-lg">
-              {t("products.desc")}
-            </p>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-lg">{t("products.desc")}</p>
           </ScrollReveal>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {displayProducts.map((product, i) => (
               <ScrollReveal key={product.id} delay={i * 0.1}>
-                <Link
-                  to={`/products/${product.id}`}
-                  className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/50"
-                >
+                <Link to={`/products/${product.id}`}
+                  className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/50">
                   <div className="aspect-[4/3] overflow-hidden bg-muted relative">
-                    <motion.img
-                      whileHover={{ scale: 1.08 }}
-                      transition={{ duration: 0.6 }}
-                      src={(() => { const u = product.image_url || localProductImages[product.id] || "/placeholder.svg"; return u.startsWith('/uploads/') ? `${API_BASE_URL}${u}` : u; })()}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
+                    <motion.img whileHover={{ scale: 1.08 }} transition={{ duration: 0.6 }}
+                      src={resolveUrl(product.image_url, localProductImages[product.id] || "/placeholder.svg")}
+                      alt={product.name} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                       <span className="inline-flex items-center text-sm text-background font-semibold bg-background/20 backdrop-blur-sm rounded-full px-4 py-1.5">
@@ -232,7 +207,9 @@ const Index = () => {
                   </div>
                   <div className="p-6">
                     <span className="text-xs font-bold text-secondary uppercase tracking-wider">{product.category}</span>
-                    <h3 className="font-display font-bold text-xl text-foreground mt-2 group-hover:text-primary transition-colors">{product.name}</h3>
+                    <h3 className="font-display font-bold text-xl text-foreground mt-2 group-hover:text-primary transition-colors">
+                      {t(`product.${product.id}`) !== `product.${product.id}` ? t(`product.${product.id}`) : product.name}
+                    </h3>
                     <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{product.short_desc}</p>
                   </div>
                 </Link>
@@ -247,9 +224,7 @@ const Index = () => {
         <div className="container">
           <ScrollReveal className="max-w-3xl mx-auto text-center">
             <div className="flex justify-center gap-1 mb-6">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-6 h-6 text-wheat fill-wheat" />
-              ))}
+              {[...Array(5)].map((_, i) => <Star key={i} className="w-6 h-6 text-wheat fill-wheat" />)}
             </div>
             <blockquote className="font-display text-2xl md:text-3xl font-semibold text-foreground leading-snug italic">
               {t("testimonial.quote")}
@@ -269,9 +244,7 @@ const Index = () => {
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6 leading-tight">
             {t("cta.title")}<br />{t("cta.titleLine2")}
           </h2>
-          <p className="text-primary-foreground/75 max-w-xl mx-auto mb-10 text-lg leading-relaxed">
-            {t("cta.desc")}
-          </p>
+          <p className="text-primary-foreground/75 max-w-xl mx-auto mb-10 text-lg leading-relaxed">{t("cta.desc")}</p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/enquiry">
               <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 h-13 px-10 text-base shadow-xl">

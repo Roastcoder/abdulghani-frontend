@@ -20,7 +20,7 @@ const Services = () => {
       desc: t("services.s1Desc"), 
       color: "from-primary/15 to-primary/5",
       image: discPlough,
-      info: "Expert maintenance and repair services for all agricultural equipment. Our skilled technicians ensure your machinery operates at peak performance."
+      info: t("services.s1Info")
     },
     { 
       icon: Settings, 
@@ -28,7 +28,7 @@ const Services = () => {
       desc: t("services.s2Desc"), 
       color: "from-secondary/15 to-secondary/5",
       image: cultivator,
-      info: "Professional customization services to adapt equipment to your specific farming needs. We modify and upgrade machinery for optimal results."
+      info: t("services.s2Info")
     },
     { 
       icon: Truck, 
@@ -36,7 +36,7 @@ const Services = () => {
       desc: t("services.s3Desc"), 
       color: "from-field/15 to-field/5",
       image: leveller,
-      info: "Fast and reliable delivery services across all regions. We ensure your equipment reaches you safely and on time, ready for immediate use."
+      info: t("services.s3Info")
     },
     { 
       icon: HeadphonesIcon, 
@@ -44,7 +44,7 @@ const Services = () => {
       desc: t("services.s4Desc"), 
       color: "from-earth/15 to-earth/5",
       image: mbPlough,
-      info: "24/7 customer support and technical assistance. Our dedicated team is always ready to help you with any questions or concerns."
+      info: t("services.s4Info")
     },
   ];
 

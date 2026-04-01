@@ -124,6 +124,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "services.s3Desc": "Reliable pan-India delivery with careful handling to ensure your equipment arrives in perfect condition.",
     "services.s4Title": "After-Sales Support",
     "services.s4Desc": "Dedicated customer support and spare parts availability to minimize downtime during critical farming seasons.",
+    "services.s1Info": "Expert maintenance and repair services for all agricultural equipment. Our skilled technicians ensure your machinery operates at peak performance.",
+    "services.s2Info": "Professional customization services to adapt equipment to your specific farming needs. We modify and upgrade machinery for optimal results.",
+    "services.s3Info": "Fast and reliable delivery services across all regions. We ensure your equipment reaches you safely and on time, ready for immediate use.",
+    "services.s4Info": "24/7 customer support and technical assistance. Our dedicated team is always ready to help you with any questions or concerns.",
     "services.customCta": "Need a custom service? We're here to help.",
     "services.contactBtn": "Contact Us",
 
@@ -334,6 +338,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "services.s3Desc": "आपके उपकरण को उत्तम स्थिति में पहुंचाने के लिए सावधानीपूर्ण हैंडलिंग के साथ विश्वसनीय पूरे भारत में डिलीवरी।",
     "services.s4Title": "बिक्री के बाद सहायता",
     "services.s4Desc": "महत्वपूर्ण कृषि मौसम के दौरान डाउनटाइम को कम करने के लिए समर्पित ग्राहक सहायता और स्पेयर पार्ट्स की उपलब्धता।",
+    "services.s1Info": "सभी कृषि उपकरणों के लिए विशेषज्ञ रखरखाव और मरम्मत सेवाएं। हमारे कुशल तकनीशियन सुनिश्चित करते हैं कि आपकी मशीनरी सर्वोत्तम प्रदर्शन पर काम करे।",
+    "services.s2Info": "आपकी विशिष्ट खेती की ज़रूरतों के अनुसार उपकरण अनुकूलित करने के लिए पेशेवर सेवाएं। हम इष्टतम परिणामों के लिए मशीनरी को संशोधित और अपग्रेड करते हैं।",
+    "services.s3Info": "सभी क्षेत्रों में तेज़ और विश्वसनीय डिलीवरी सेवाएं। हम सुनिश्चित करते हैं कि आपका उपकरण सुरक्षित और समय पर पहुंचे, तुरंत उपयोग के लिए तैयार।",
+    "services.s4Info": "24/7 ग्राहक सहायता और तकनीकी सहायता। हमारी समर्पित टीम हमेशा आपके किसी भी प्रश्न या चिंता में मदद के लिए तैयार है।",
     "services.customCta": "कस्टम सेवा चाहिए? हम मदद के लिए यहां हैं।",
     "services.contactBtn": "संपर्क करें",
 
