@@ -60,6 +60,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "products.pageDesc": "Explore our range of high-quality agricultural equipment designed for Indian farming conditions.",
     "products.loading": "Loading products...",
     "products.readMore": "Read More →",
+    "products.backToProducts": "Back to Products",
+    "products.notFound": "Product Not Found",
+    "products.keyFeatures": "Key Features",
 
     // Product names
     "product.disc-plough": "Disc Plough",
@@ -67,6 +70,20 @@ export const translations: Record<Language, Record<string, string>> = {
     "product.leveller": "Leveller",
     "product.cultivator": "Cultivator",
     "product.mb-plough": "MB Plough",
+
+    // Product descriptions (English)
+    "product.disc-plough.desc": "Our premium Disc Plough is engineered for efficient primary tillage in tough soil conditions. Built with high-carbon steel discs and a robust frame, it delivers superior soil turning and residue incorporation.",
+    "product.automatic-disc-plough.desc": "The Automatic Disc Plough features hydraulic lift and depth control for effortless operation. With automatic adjustment to varying soil conditions, it ensures consistent tillage depth.",
+    "product.leveller.desc": "Our Leveller provides precision land leveling for optimal water distribution and crop uniformity. Engineered with a reinforced blade and adjustable frame.",
+    "product.cultivator.desc": "Our Cultivator is designed for secondary tillage, weed control, and soil aeration. With spring-loaded tines and adjustable depth settings.",
+    "product.mb-plough.desc": "The MB (Mouldboard) Plough is the traditional choice for deep soil inversion and thorough mixing of crop residues. Features hardened steel mouldboards.",
+
+    // Product features (English)
+    "product.disc-plough.features": "High-carbon steel discs|Heavy-duty frame construction|Adjustable disc angle|Suitable for all soil types|Low maintenance design",
+    "product.automatic-disc-plough.features": "Hydraulic lift system|Automatic depth control|Self-adjusting disc angles|Heavy-duty bearings|Compatible with major tractor brands",
+    "product.leveller.features": "Precision leveling blade|Adjustable height control|Reinforced steel frame|Wide coverage area|Easy tractor mounting",
+    "product.cultivator.features": "Spring-loaded tines|Adjustable working depth|Wide working width|Weed cutting capability|Durable construction",
+    "product.mb-plough.features": "Hardened steel mouldboards|Replaceable shares|Deep soil penetration|Excellent residue burial|Multiple furrow options",
 
     // Testimonial
     "testimonial.quote": '"The quality of Abdul Gani\'s disc plough is exceptional. It has transformed how we prepare our fields every season."',
@@ -274,6 +291,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "products.pageDesc": "भारतीय खेती की परिस्थितियों के लिए डिज़ाइन किए गए हमारे उच्च गुणवत्ता वाले कृषि उपकरणों की श्रेणी देखें।",
     "products.loading": "उत्पाद लोड हो रहे हैं...",
     "products.readMore": "और पढ़ें →",
+    "products.backToProducts": "उत्पादों पर वापस",
+    "products.notFound": "उत्पाद नहीं मिला",
+    "products.keyFeatures": "मुख्य विशेषताएं",
 
     // Product names
     "product.disc-plough": "डिस्क हल",
@@ -281,6 +301,20 @@ export const translations: Record<Language, Record<string, string>> = {
     "product.leveller": "लेवलर",
     "product.cultivator": "कल्टीवेटर",
     "product.mb-plough": "एमबी हल",
+
+    // Product descriptions (Hindi)
+    "product.disc-plough.desc": "हमारा प्रीमियम डिस्क हल कठिन मिट्टी की परिस्थितियों में कुशल प्राथमिक जुताई के लिए इंजीनियर किया गया है। उच्च-कार्बन स्टील डिस्क और मजबूत फ्रेम से बना, यह बेहतरीन मिट्टी पलटाई और अवशेष समावेशन प्रदान करता है।",
+    "product.automatic-disc-plough.desc": "ऑटोमैटिक डिस्क हल में आसान संचालन के लिए हाइड्रोलिक लिफ्ट और गहराई नियंत्रण है। विभिन्न मिट्टी परिस्थितियों के स्वचालित समायोजन से यह लगातार जुताई गहराई सुनिश्चित करता है।",
+    "product.leveller.desc": "हमारा लेवलर इष्टतम जल वितरण और फसल एकरूपता के लिए सटीक भूमि समतलन प्रदान करता है। मजबूत ब्लेड और समायोज्य फ्रेम के साथ इंजीनियर किया गया है।",
+    "product.cultivator.desc": "हमारा कल्टीवेटर द्वितीयक जुताई, खरपतवार नियंत्रण और मिट्टी वायुसंचार के लिए डिज़ाइन किया गया है। स्प्रिंग-लोडेड टाइन्स और समायोज्य गहराई सेटिंग्स के साथ।",
+    "product.mb-plough.desc": "एमबी (मोल्डबोर्ड) हल गहरी मिट्टी पलटाई और फसल अवशेषों के तेमल मिश्रण के लिए पारंपरिक विकल्प है। कठोर स्टील मोल्डबोर्ड विशेषताएं।",
+
+    // Product features (Hindi - pipe separated)
+    "product.disc-plough.features": "उच्च-कार्बन स्टील डिस्क|मजबूत फ्रेम निर्माण|समायोज्य डिस्क कोण|सभी मिट्टी प्रकारों के लिए उपयुक्त|कम रखरखाव डिज़ाइन",
+    "product.automatic-disc-plough.features": "हाइड्रोलिक लिफ्ट सिस्टम|स्वचालित गहराई नियंत्रण|स्व-समायोजन डिस्क कोण|मजबूत बेयरिंग|प्रमुख ट्रैक्टर ब्रांड के साथ संगत",
+    "product.leveller.features": "सटीक समतलन ब्लेड|समायोज्य उच्चाई नियंत्रण|मजबूत स्टील फ्रेम|विस्तृत कवरेज क्षेत्र|आसान ट्रैक्टर माउंटिंग",
+    "product.cultivator.features": "स्प्रिंग-लोडेड टाइन्स|समायोज्य कार्य गहराई|विस्तृत कार्य चौड़ाई|खरपतवार काटने की क्षमता|टिकाऊ निर्माण",
+    "product.mb-plough.features": "कठोर स्टील मोल्डबोर्ड|बदलने योग्य शेयर|गहरी मिट्टी प्रवेश|उत्कृष्ट अवशेष दफन|अनेक फरो विकल्प",
 
     // Testimonial
     "testimonial.quote": '"अब्दुल गनी के डिस्क हल की गुणवत्ता असाधारण है। इसने हर मौसम में हमारे खेतों की तैयारी को बदल दिया है।"',

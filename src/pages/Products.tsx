@@ -74,7 +74,7 @@ const ProductCard = ({ product, index, getProductName }: any) => {
           <h3 className="font-display font-bold text-xl text-foreground mt-2">{getProductName(product)}</h3>
           <p className="text-sm text-muted-foreground mt-2">{product.short_desc}</p>
           <span className="inline-flex items-center text-sm text-primary font-semibold mt-4 group-hover:gap-3 transition-all">
-            View Details <ArrowRight className="w-4 h-4 ml-1" />
+            {t("products.viewDetails")} <ArrowRight className="w-4 h-4 ml-1" />
           </span>
         </div>
       </Link>

@@ -3,6 +3,7 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Check, Phone, ChevronLeft, ChevronRight } from "lucide-react";
 import { useProducts } from "@/hooks/useProducts";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import discPlough from "@/assets/disc-plough.jpg";
@@ -29,8 +30,22 @@ const resolveImg = (url: string, id: string) => {
 const ProductDetail = () => {
   const { id } = useParams();
   const { data: products, isLoading } = useProducts();
+  const { t, language } = useLanguage();
   const product = products?.find((p) => p.id === id);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const productName = product
+    ? (t(`product.${product.id}`) !== `product.${product.id}` ? t(`product.${product.id}`) : product.name)
+    : "";
+
+  // Use Hindi translations for description and features when Hindi is selected
+  const productDesc = language === "hi" && t(`product.${product?.id}.desc`) !== `product.${product?.id}.desc`
+    ? t(`product.${product?.id}.desc`)
+    : product?.description;
+
+  const productFeatures = language === "hi" && t(`product.${product?.id}.features`) !== `product.${product?.id}.features`
+    ? t(`product.${product?.id}.features`).split("|")
+    : product?.features;
 
   const images = product ? [resolveImg(product.image_url, product.id)] : ["/placeholder.svg"];
 
@@ -41,7 +56,7 @@ const ProductDetail = () => {
     return (
       <Layout>
         <div className="container py-20 text-center">
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">{t("products.loading")}</p>
         </div>
       </Layout>
     );
@@ -51,8 +66,8 @@ const ProductDetail = () => {
     return (
       <Layout>
         <div className="container py-20 text-center">
-          <h1 className="font-display text-3xl font-bold text-foreground">Product Not Found</h1>
-          <Link to="/products" className="text-primary mt-4 inline-block">Back to Products</Link>
+          <h1 className="font-display text-3xl font-bold text-foreground">{t("products.notFound") || "Product Not Found"}</h1>
+          <Link to="/products" className="text-primary mt-4 inline-block">{t("products.backToProducts") || "Back to Products"}</Link>
         </div>
       </Layout>
     );
@@ -62,7 +77,7 @@ const ProductDetail = () => {
     <Layout>
       <div className="container py-10">
         <Link to="/products" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-8 group">
-          <ArrowLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" /> Back to Products
+          <ArrowLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" /> {t("products.backToProducts") || "Back to Products"}
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -147,13 +162,13 @@ const ProductDetail = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <span className="text-xs font-semibold text-secondary uppercase tracking-wider">{product.category}</span>
-            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-3">{product.name}</h1>
-            <p className="text-muted-foreground mt-5 leading-relaxed text-lg">{product.description}</p>
+            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-3">{productName}</h1>
+            <p className="text-muted-foreground mt-5 leading-relaxed text-lg">{productDesc}</p>
 
             <div className="mt-10">
-              <h3 className="font-display font-semibold text-xl text-foreground mb-4">Key Features</h3>
+              <h3 className="font-display font-semibold text-xl text-foreground mb-4">{t("products.keyFeatures") || "Key Features"}</h3>
               <ul className="space-y-3">
-                {product.features?.map((f, i) => (
+                {productFeatures?.map((f, i) => (
                   <motion.li
                     key={i}
                     initial={{ opacity: 0, x: 20 }}
@@ -173,11 +188,11 @@ const ProductDetail = () => {
             <div className="mt-10 flex flex-wrap gap-4">
               <Link to="/enquiry">
                 <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 h-12 px-8 shadow-md">
-                  <Phone className="w-4 h-4 mr-2" /> Request Quote
+                  <Phone className="w-4 h-4 mr-2" /> {t("hero.requestQuote")}
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button size="lg" variant="outline" className="h-12 px-8">Contact Us</Button>
+                <Button size="lg" variant="outline" className="h-12 px-8">{t("cta.contactUs")}</Button>
               </Link>
             </div>
           </motion.div>
