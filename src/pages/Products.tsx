@@ -28,6 +28,7 @@ const resolveImg = (url: string, id: string) => {
 
 const ProductCard = ({ product, index, getProductName }: any) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { t } = useLanguage();
   const images = [resolveImg(product.image_url, product.id)];
 
   useEffect(() => {
