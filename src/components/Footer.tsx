@@ -52,9 +52,11 @@ const Footer = () => {
               <span className="w-6 h-px bg-secondary" /> {t("footer.products")}
             </h4>
             <ul className="space-y-3 text-sm">
-              {["Disc Plough", "Automatic Disc Plough", "Leveller", "Cultivator", "MB Plough"].map((p) => (
-                <li key={p}>
-                  <Link to="/products" className="text-background/60 hover:text-background transition-colors">{p}</Link>
+              {["disc-plough", "automatic-disc-plough", "leveller", "cultivator", "mb-plough"].map((id) => (
+                <li key={id}>
+                  <Link to="/products" className="text-background/60 hover:text-background transition-colors">
+                    {t(`product.${id}`)}
+                  </Link>
                 </li>
               ))}
             </ul>
