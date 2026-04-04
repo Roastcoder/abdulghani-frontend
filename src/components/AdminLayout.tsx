@@ -2,12 +2,13 @@ import { ReactNode, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { LayoutDashboard, Package, FileText, MessageSquare, HelpCircle, LogOut, ArrowUpRight, Menu, X, ChevronRight, Wheat, Globe } from "lucide-react";
+import { LayoutDashboard, Package, FileText, MessageSquare, HelpCircle, BookOpen, LogOut, ArrowUpRight, Menu, X, ChevronRight, Wheat, Globe } from "lucide-react";
 
 const navItems = [
   { label: "Dashboard", labelHi: "डैशबोर्ड", path: "/admin", icon: LayoutDashboard },
   { label: "Products", labelHi: "उत्पाद", path: "/admin/products", icon: Package },
   { label: "Enquiries", labelHi: "पूछताछ", path: "/admin/enquiries", icon: MessageSquare },
+  { label: "Blog", labelHi: "ब्लॉग", path: "/admin/blog", icon: BookOpen },
   { label: "FAQ", labelHi: "सवाल-जवाब", path: "/admin/faq", icon: HelpCircle },
   { label: "Site Content", labelHi: "साइट सामग्री", path: "/admin/content", icon: FileText },
 ];
