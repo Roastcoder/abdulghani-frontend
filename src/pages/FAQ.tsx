@@ -6,7 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { API_BASE_URL } from "@/config/api";
 
 const FAQ = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const hi = language === "hi";
 
   const { data: dbFaqs } = useQuery({
     queryKey: ["faqs"],
@@ -16,7 +17,7 @@ const FAQ = () => {
     },
   });
 
-  const fallbackFaqs = [
+  const hiFaqs = [
     { question: t("faq.q1"), answer: t("faq.a1") },
     { question: t("faq.q2"), answer: t("faq.a2") },
     { question: t("faq.q3"), answer: t("faq.a3") },
@@ -25,7 +26,8 @@ const FAQ = () => {
     { question: t("faq.q6"), answer: t("faq.a6") },
   ];
 
-  const faqs = dbFaqs?.length ? dbFaqs : fallbackFaqs;
+  // Hindi always uses translations; English uses DB with translation fallback
+  const faqs = hi ? hiFaqs : (dbFaqs?.length ? dbFaqs : hiFaqs);
 
   return (
     <Layout>
@@ -42,13 +44,7 @@ const FAQ = () => {
         <div className="container max-w-3xl">
           <Accordion type="single" collapsible className="space-y-3">
             {faqs.map((faq: any, i: number) => (
-              <motion.div
-                key={faq.id ?? i}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-              >
+              <motion.div key={faq.id ?? i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
                 <AccordionItem value={`faq-${i}`} className="bg-card border border-border/50 rounded-xl px-6 shadow-sm">
                   <AccordionTrigger className="font-display font-semibold text-foreground hover:no-underline text-left">
                     {faq.question}
