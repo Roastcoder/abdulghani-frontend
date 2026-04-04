@@ -1,21 +1,25 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutDashboard, Package, FileText, MessageSquare, HelpCircle, LogOut, ArrowUpRight, Menu, X, ChevronRight, Wheat } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LayoutDashboard, Package, FileText, MessageSquare, HelpCircle, LogOut, ArrowUpRight, Menu, X, ChevronRight, Wheat, Globe } from "lucide-react";
 
 const navItems = [
-  { label: "Dashboard", path: "/admin", icon: LayoutDashboard },
-  { label: "Products", path: "/admin/products", icon: Package },
-  { label: "Enquiries", path: "/admin/enquiries", icon: MessageSquare },
-  { label: "FAQ", path: "/admin/faq", icon: HelpCircle },
-  { label: "Site Content", path: "/admin/content", icon: FileText },
+  { label: "Dashboard", labelHi: "डैशबोर्ड", path: "/admin", icon: LayoutDashboard },
+  { label: "Products", labelHi: "उत्पाद", path: "/admin/products", icon: Package },
+  { label: "Enquiries", labelHi: "पूछताछ", path: "/admin/enquiries", icon: MessageSquare },
+  { label: "FAQ", labelHi: "सवाल-जवाब", path: "/admin/faq", icon: HelpCircle },
+  { label: "Site Content", labelHi: "साइट सामग्री", path: "/admin/content", icon: FileText },
 ];
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {
   const { user, isAdmin, loading, signOut } = useAuth();
+  const { language, setLanguage } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const isHindi = language === "hi";
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) navigate("/admin/login");
@@ -35,6 +39,18 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   if (!user || !isAdmin) return null;
 
   const currentNav = navItems.find(n => n.path === location.pathname);
+  const currentLabel = isHindi ? (currentNav?.labelHi ?? "पेज") : (currentNav?.label ?? "Page");
+
+  const LangToggle = () => (
+    <button
+      onClick={() => setLanguage(isHindi ? "en" : "hi")}
+      className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold border border-gray-200 hover:bg-gray-50 text-gray-600 hover:text-gray-900 transition-all"
+      title="Switch Language"
+    >
+      <Globe className="w-3.5 h-3.5" />
+      {isHindi ? "EN" : "हिं"}
+    </button>
+  );
 
   const Sidebar = () => (
     <aside className="w-64 h-full bg-white border-r border-gray-100 flex flex-col shadow-sm">
@@ -45,36 +61,44 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
           </div>
           <div>
             <p className="text-gray-900 font-bold text-sm leading-none">Abdul Gani</p>
-            <p className="text-gray-400 text-[11px] mt-0.5">Admin Panel</p>
+            <p className="text-gray-400 text-[11px] mt-0.5">{isHindi ? "एडमिन पैनल" : "Admin Panel"}</p>
           </div>
         </div>
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-0.5">
-        <p className="text-gray-400 text-[10px] font-semibold uppercase tracking-widest px-3 mb-3">Menu</p>
+        <p className="text-gray-400 text-[10px] font-semibold uppercase tracking-widest px-3 mb-3">
+          {isHindi ? "मेनू" : "Menu"}
+        </p>
         {navItems.map((item) => {
           const active = location.pathname === item.path;
           return (
-            <Link
-              key={item.path}
-              to={item.path}
+            <Link key={item.path} to={item.path}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all group ${
                 active ? "bg-primary text-primary-foreground shadow-sm" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
               }`}
             >
               <item.icon className="w-4 h-4 shrink-0" />
-              <span>{item.label}</span>
+              <span>{isHindi ? item.labelHi : item.label}</span>
             </Link>
           );
         })}
       </nav>
 
       <div className="px-3 py-4 border-t border-gray-100 space-y-1">
+        {/* Language toggle in sidebar */}
+        <button
+          onClick={() => setLanguage(isHindi ? "en" : "hi")}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all"
+        >
+          <Globe className="w-4 h-4" />
+          {isHindi ? "Switch to English" : "हिन्दी में बदलें"}
+        </button>
         <Link to="/" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all">
-          <ArrowUpRight className="w-4 h-4" /> View Website
+          <ArrowUpRight className="w-4 h-4" /> {isHindi ? "वेबसाइट देखें" : "View Website"}
         </Link>
         <button onClick={() => signOut()} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:text-red-600 hover:bg-red-50 transition-all">
-          <LogOut className="w-4 h-4" /> Sign Out
+          <LogOut className="w-4 h-4" /> {isHindi ? "साइन आउट" : "Sign Out"}
         </button>
         <div className="flex items-center gap-3 px-3 py-3 mt-1 rounded-xl bg-gray-50 border border-gray-100">
           <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xs font-bold shrink-0">
@@ -82,7 +106,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
           </div>
           <div className="min-w-0">
             <p className="text-gray-800 text-xs font-semibold truncate">{user?.username ?? "admin"}</p>
-            <p className="text-gray-400 text-[10px]">Administrator</p>
+            <p className="text-gray-400 text-[10px]">{isHindi ? "प्रशासक" : "Administrator"}</p>
           </div>
         </div>
       </div>
@@ -107,14 +131,17 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
               {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
             <div className="flex items-center gap-1.5 text-sm">
-              <span className="text-gray-400">Admin</span>
+              <span className="text-gray-400">{isHindi ? "एडमिन" : "Admin"}</span>
               <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
-              <span className="text-gray-800 font-semibold">{currentNav?.label ?? "Page"}</span>
+              <span className="text-gray-800 font-semibold">{currentLabel}</span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-500" />
-            <span className="text-gray-400 text-xs">Live</span>
+          <div className="flex items-center gap-3">
+            <LangToggle />
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-green-500" />
+              <span className="text-gray-400 text-xs">Live</span>
+            </div>
           </div>
         </header>
         <main className="flex-1 p-6 md:p-8 overflow-auto">{children}</main>
