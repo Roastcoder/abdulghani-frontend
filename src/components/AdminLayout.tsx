@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   LayoutDashboard, Package, FileText, MessageSquare,
-  HelpCircle, BookOpen, LogOut, ArrowUpRight,
+  HelpCircle, BookOpen, Wrench, LogOut, ArrowUpRight,
   Menu, X, Wheat, Globe, Bell, ChevronRight
 } from "lucide-react";
 
@@ -20,6 +20,7 @@ const navGroups = [
   {
     label: { en: "Content", hi: "सामग्री" },
     items: [
+      { label: "Services", labelHi: "सेवाएं", path: "/admin/services", icon: Wrench },
       { label: "Blog", labelHi: "ब्लॉग", path: "/admin/blog", icon: BookOpen },
       { label: "FAQ", labelHi: "सवाल-जवाब", path: "/admin/faq", icon: HelpCircle },
       { label: "Site Content", labelHi: "साइट सामग्री", path: "/admin/content", icon: FileText },

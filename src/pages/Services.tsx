@@ -5,48 +5,51 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useQuery } from "@tanstack/react-query";
+import { API_BASE_URL } from "@/config/api";
 import discPlough from "@/assets/disc-plough.jpg";
 import cultivator from "@/assets/cultivator.jpg";
 import leveller from "@/assets/leveller.jpg";
 import mbPlough from "@/assets/mb-plough.jpg";
 
-const Services = () => {
-  const { t } = useLanguage();
+const localImages = [discPlough, cultivator, leveller, mbPlough];
+const icons = [Wrench, Settings, Truck, HeadphonesIcon];
+const colors = ["from-primary/15 to-primary/5", "from-secondary/15 to-secondary/5", "from-field/15 to-field/5", "from-earth/15 to-earth/5"];
 
-  const services = [
-    { 
-      icon: Wrench, 
-      title: t("services.s1Title"), 
-      desc: t("services.s1Desc"), 
-      color: "from-primary/15 to-primary/5",
-      image: discPlough,
-      info: t("services.s1Info")
+const resolveImg = (url: string, fallback: string) => {
+  if (!url) return fallback;
+  if (url.startsWith("/uploads/")) return `${API_BASE_URL}${url}`;
+  return url;
+};
+
+const Services = () => {
+  const { t, language } = useLanguage();
+  const hi = language === "hi";
+
+  const { data: dbServices } = useQuery({
+    queryKey: ["services"],
+    queryFn: async () => {
+      const res = await fetch(`${API_BASE_URL}/api/services`);
+      return res.ok ? res.json() : [];
     },
-    { 
-      icon: Settings, 
-      title: t("services.s2Title"), 
-      desc: t("services.s2Desc"), 
-      color: "from-secondary/15 to-secondary/5",
-      image: cultivator,
-      info: t("services.s2Info")
-    },
-    { 
-      icon: Truck, 
-      title: t("services.s3Title"), 
-      desc: t("services.s3Desc"), 
-      color: "from-field/15 to-field/5",
-      image: leveller,
-      info: t("services.s3Info")
-    },
-    { 
-      icon: HeadphonesIcon, 
-      title: t("services.s4Title"), 
-      desc: t("services.s4Desc"), 
-      color: "from-earth/15 to-earth/5",
-      image: mbPlough,
-      info: t("services.s4Info")
-    },
+  });
+
+  const fallbackServices = [
+    { title: t("services.s1Title"), desc: t("services.s1Desc"), info: t("services.s1Info") },
+    { title: t("services.s2Title"), desc: t("services.s2Desc"), info: t("services.s2Info") },
+    { title: t("services.s3Title"), desc: t("services.s3Desc"), info: t("services.s3Info") },
+    { title: t("services.s4Title"), desc: t("services.s4Desc"), info: t("services.s4Info") },
   ];
+
+  // Hindi always uses translations; English uses DB with fallback
+  const rawServices = hi ? fallbackServices : (dbServices?.length ? dbServices : fallbackServices);
+
+  const services = rawServices.map((s: any, i: number) => ({
+    ...s,
+    icon: icons[i % icons.length],
+    color: colors[i % colors.length],
+    image: resolveImg(s.image_url, localImages[i % localImages.length]),
+  }));
 
   return (
     <Layout>
@@ -65,27 +68,21 @@ const Services = () => {
       <section className="py-24">
         <div className="container">
           <div className="grid grid-cols-1 gap-12">
-            {services.map((s, i) => (
+            {services.map((s: any, i: number) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <motion.div
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className="bg-card border border-border/50 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                    <div className="aspect-[4/3] md:aspect-auto overflow-hidden">
-                      <img 
-                        src={s.image} 
-                        alt={s.title}
-                        className="w-full h-full object-cover"
-                      />
+                <motion.div whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  className="bg-card border border-border/50 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow">
+                  <div className={`grid grid-cols-1 md:grid-cols-2 gap-0 ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}>
+                    <div className={`aspect-[4/3] md:aspect-auto overflow-hidden ${i % 2 !== 0 ? "md:order-2" : ""}`}>
+                      <img src={s.image} alt={s.title} className="w-full h-full object-cover" />
                     </div>
-                    <div className="p-8 md:p-10 flex flex-col justify-center">
+                    <div className={`p-8 md:p-10 flex flex-col justify-center ${i % 2 !== 0 ? "md:order-1" : ""}`}>
                       <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${s.color} flex items-center justify-center mb-6`}>
                         <s.icon className="w-8 h-8 text-primary" />
                       </div>
                       <h3 className="font-display text-2xl font-bold text-foreground mb-3">{s.title}</h3>
                       <p className="text-muted-foreground leading-relaxed mb-4">{s.desc}</p>
-                      <p className="text-sm text-foreground/70 leading-relaxed">{s.info}</p>
+                      {s.info && <p className="text-sm text-foreground/70 leading-relaxed">{s.info}</p>}
                     </div>
                   </div>
                 </motion.div>
