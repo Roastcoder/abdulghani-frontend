@@ -30,7 +30,7 @@ const AdminContent = () => {
 
   const tabs = [
     { key: "Hero & Carousel", label: hi ? "हीरो और कैरोसेल" : "Hero & Carousel" },
-    { key: "About", label: hi ? "हमारे बारे में" : "About" },
+    { key: "About", label: hi ? "हमारे बारे में" : "About Us" },
     { key: "Contact", label: hi ? "संपर्क" : "Contact" },
     { key: "Stats", label: hi ? "आंकड़े" : "Stats" },
     { key: "Gallery", label: hi ? "गैलरी" : "Gallery" },
@@ -140,13 +140,95 @@ const AdminContent = () => {
 
         {active === "About" && (
           <>
-            <ImageUpload label={hi ? "हमारे बारे में छवि" : "About Section Image"} value={form.about_image ?? ""} onChange={url => autoSave("about_image", url)} />
-            {["about_story_p1", "about_story_p2", "about_story_p3"].map((key, i) => (
-              <Field key={key} label={`${hi ? "कहानी अनुच्छेद" : "Story Paragraph"} ${i + 1}`}>
-                <textarea value={form[key] ?? ""} onChange={e => set(key, e.target.value)} rows={3} className={`${inputCls} resize-none`} />
-              </Field>
-            ))}
-            <SaveBtn keys={["about_image", "about_story_p1", "about_story_p2", "about_story_p3"]} />
+            {/* Hero section */}
+            <div>
+              <h2 className="text-gray-800 font-semibold text-sm mb-1">{hi ? "पेज हेडर" : "Page Header"}</h2>
+              <p className="text-gray-400 text-xs mb-4">{hi ? "About Us पेज के शीर्ष पर दिखने वाला टेक्स्ट" : "Text shown at the top of the About Us page"}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Field label={hi ? "टैगलाइन" : "Tagline"}><input value={form.about_tagline ?? ""} onChange={e => set("about_tagline", e.target.value)} className={inputCls} /></Field>
+                <Field label={hi ? "मुख्य शीर्षक" : "Main Title"}><input value={form.about_title ?? ""} onChange={e => set("about_title", e.target.value)} className={inputCls} /></Field>
+              </div>
+              <div className="mt-4">
+                <Field label={hi ? "उपशीर्षक" : "Subtitle"}>
+                  <textarea value={form.about_subtitle ?? ""} onChange={e => set("about_subtitle", e.target.value)} rows={2} className={`${inputCls} resize-none`} />
+                </Field>
+              </div>
+            </div>
+
+            {/* Story section */}
+            <div className="border-t border-gray-100 pt-6">
+              <h2 className="text-gray-800 font-semibold text-sm mb-1">{hi ? "हमारी कहानी" : "Our Story"}</h2>
+              <p className="text-gray-400 text-xs mb-4">{hi ? "कहानी सेक्शन का टेक्स्ट और छवि" : "Story section text and image"}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <Field label={hi ? "सेक्शन टैग" : "Section Tag"}><input value={form.about_story_tag ?? ""} onChange={e => set("about_story_tag", e.target.value)} className={inputCls} /></Field>
+                <Field label={hi ? "सेक्शन शीर्षक" : "Section Title"}><input value={form.about_story_title ?? ""} onChange={e => set("about_story_title", e.target.value)} className={inputCls} /></Field>
+              </div>
+              {["about_story_p1", "about_story_p2", "about_story_p3"].map((key, i) => (
+                <Field key={key} label={`${hi ? "अनुच्छेद" : "Paragraph"} ${i + 1}`}>
+                  <textarea value={form[key] ?? ""} onChange={e => set(key, e.target.value)} rows={3} className={`${inputCls} resize-none mb-3`} />
+                </Field>
+              ))}
+              <ImageUpload label={hi ? "कहानी छवि" : "Story Image"} value={form.about_image ?? ""} onChange={url => autoSave("about_image", url)} />
+            </div>
+
+            {/* Milestones */}
+            <div className="border-t border-gray-100 pt-6">
+              <h2 className="text-gray-800 font-semibold text-sm mb-1">{hi ? "हमारा सफर (माइलस्टोन)" : "Our Journey (Milestones)"}</h2>
+              <p className="text-gray-400 text-xs mb-4">{hi ? "4 माइलस्टोन जो टाइमलाइन में दिखते हैं" : "4 milestones shown in the timeline"}</p>
+              <div className="space-y-4">
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="border border-gray-100 rounded-xl p-4 bg-gray-50/50">
+                    <p className="text-gray-700 text-xs font-bold uppercase tracking-wider mb-3">{hi ? `माइलस्टोन ${i}` : `Milestone ${i}`}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <Field label={hi ? "वर्ष/लेबल" : "Year / Label"}>
+                        <input value={form[`about_milestone${i}_year`] ?? ""} onChange={e => set(`about_milestone${i}_year`, e.target.value)} className={inputCls} />
+                      </Field>
+                      <Field label={hi ? "शीर्षक" : "Title"}>
+                        <input value={form[`about_milestone${i}_title`] ?? ""} onChange={e => set(`about_milestone${i}_title`, e.target.value)} className={inputCls} />
+                      </Field>
+                      <Field label={hi ? "विवरण" : "Description"}>
+                        <input value={form[`about_milestone${i}_desc`] ?? ""} onChange={e => set(`about_milestone${i}_desc`, e.target.value)} className={inputCls} />
+                      </Field>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Values */}
+            <div className="border-t border-gray-100 pt-6">
+              <h2 className="text-gray-800 font-semibold text-sm mb-1">{hi ? "हमारे मूल्य" : "Our Values"}</h2>
+              <p className="text-gray-400 text-xs mb-4">{hi ? "4 मूल्य कार्ड जो पेज के नीचे दिखते हैं" : "4 value cards shown at the bottom of the page"}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="border border-gray-100 rounded-xl p-4 bg-gray-50/50">
+                    <p className="text-gray-700 text-xs font-bold uppercase tracking-wider mb-3">{hi ? `मूल्य ${i}` : `Value ${i}`}</p>
+                    <div className="space-y-3">
+                      <Field label={hi ? "शीर्षक" : "Title"}>
+                        <input value={form[`about_value${i}_title`] ?? ""} onChange={e => set(`about_value${i}_title`, e.target.value)} className={inputCls} />
+                      </Field>
+                      <Field label={hi ? "विवरण" : "Description"}>
+                        <textarea value={form[`about_value${i}_desc`] ?? ""} onChange={e => set(`about_value${i}_desc`, e.target.value)} rows={2} className={`${inputCls} resize-none`} />
+                      </Field>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <SaveBtn keys={[
+              "about_tagline", "about_title", "about_subtitle",
+              "about_story_tag", "about_story_title",
+              "about_story_p1", "about_story_p2", "about_story_p3",
+              "about_milestone1_year", "about_milestone1_title", "about_milestone1_desc",
+              "about_milestone2_year", "about_milestone2_title", "about_milestone2_desc",
+              "about_milestone3_year", "about_milestone3_title", "about_milestone3_desc",
+              "about_milestone4_year", "about_milestone4_title", "about_milestone4_desc",
+              "about_value1_title", "about_value1_desc",
+              "about_value2_title", "about_value2_desc",
+              "about_value3_title", "about_value3_desc",
+              "about_value4_title", "about_value4_desc",
+            ]} />
           </>
         )}
 
